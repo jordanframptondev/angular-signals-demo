@@ -1,0 +1,28 @@
+<div style="padding: 30px 30px">
+  <h1>Signal Reference Guide</h1>
+
+  <hr style="padding: 10px 0">
+
+  <h3><b>Signal Methods</b></h3>
+
+  <h4>set(value: T): void;</h4>
+  <p>Directly set the signal to a new value, and notify any dependents.</p>
+
+  <h4>update(updateFn: (value: T) => T): void;</h4>
+  <p>Update the value of the signal based on its current value, and notify any dependents.</p>
+
+  <h4>mutate(mutatorFn: (value: T) => void): void;</h4>
+  <p>Update the current value by mutating it in-place, and notify any dependents.</p>
+
+  <h4>asReadonly(): Signal &lt;T&gt;;</h4>
+  <p>Returns a readonly version of this signal. Readonly signals can be accessed to read their value but can't be
+    changed using set, update or mutate methods. The readonly signals do _not_ have any built-in mechanism that would
+    prevent deep-mutation of their value.</p>
+
+  <hr style="padding: 10px 0">
+
+  <h3><b>Reference Links</b></h3>
+  <a href="https://angular.io/guide/signals">Angular Signal Doc</a>
+  <br>
+  <a href="https://www.youtube.com/watch?v=iA6iyoantuo&t=220s">YouTube Video: Why didn't the Angular team just use RxJS instead of Signals?</a>
+</div>
