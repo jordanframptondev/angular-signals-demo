@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, signal} from '@angular/core';
+import {FakeUserService} from "../../services/fake-user/fake-user.service";
 
 @Component({
   selector: 'app-signal-async',
@@ -7,4 +8,13 @@ import { Component } from '@angular/core';
 })
 export class SignalAsyncComponent {
 
+  randomName = this.fakeUserService.newRandomName;
+  userHistory = this.fakeUserService.userHistoryLog;
+
+  constructor(private fakeUserService: FakeUserService) {
+  }
+
+  getRandomUser() {
+    this.fakeUserService.signalFetchRandomUser$();
+  }
 }

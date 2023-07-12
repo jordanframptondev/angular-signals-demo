@@ -6,16 +6,16 @@ import {Component} from '@angular/core';
   styleUrls: ['./default-counter.component.sass']
 })
 export class DefaultCounterComponent {
-  counter = 0;
   logActions: string[] = [];
-
-  decrement() {
-    this.counter--;
-    this.logActions.push('DECREMENT');
-  }
+  count = 0;
 
   increment() {
-    this.counter++;
+    this.count++;
     this.logActions.push('INCREMENT');
+  }
+
+  decrement() {
+    this.count--;
+    this.logActions.push('DECREMENT');
   }
 }

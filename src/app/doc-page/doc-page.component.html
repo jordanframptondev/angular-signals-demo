@@ -5,19 +5,25 @@
 
   <h3><b>Signal Methods</b></h3>
 
-  <h4>set(value: T): void;</h4>
+  <h4>set();</h4>
   <p>Directly set the signal to a new value, and notify any dependents.</p>
 
-  <h4>update(updateFn: (value: T) => T): void;</h4>
+  <h4>update()</h4>
   <p>Update the value of the signal based on its current value, and notify any dependents.</p>
 
-  <h4>mutate(mutatorFn: (value: T) => void): void;</h4>
+  <h4>mutate()</h4>
   <p>Update the current value by mutating it in-place, and notify any dependents.</p>
 
-  <h4>asReadonly(): Signal &lt;T&gt;;</h4>
+  <h4>asReadonly()</h4>
   <p>Returns a readonly version of this signal. Readonly signals can be accessed to read their value but can't be
     changed using set, update or mutate methods. The readonly signals do _not_ have any built-in mechanism that would
     prevent deep-mutation of their value.</p>
+
+  <h4>computed()</h4>
+  <p>Create a computed Signal which derives a reactive value from an expression. (aka a value that relies on another value). A computed signal derives its value from other signals.</p>
+
+  <h4>effect()</h4>
+  <p>An effect is an operation that runs whenever one or more signal values change. </p>
 
   <hr style="padding: 10px 0">
 

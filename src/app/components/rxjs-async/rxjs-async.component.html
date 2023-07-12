@@ -1,1 +1,12 @@
-<p>rxjs-async works!</p>
+<h3>RxJS User Component</h3>
+<button (click)="getRandomUser()">Get User</button>
+<div *ngIf="randomName" style="padding-top: 20px">
+  <h4>New Random User</h4>
+  <p>{{randomName}}</p>
+</div>
+<div *ngIf="userHistoryList.length > 1">
+  <h4>User History Log</h4>
+  <ol>
+    <li *ngFor="let userName of userHistoryList">{{userName}}</li>
+  </ol>
+</div>

@@ -1,7 +1,7 @@
-<h1>Signal (Granular Change Detection)</h1>
+<h1>RxJS (Behavior Subject)</h1>
 
 <div>
-  <p>Counter: {{ count() }}</p>
+  <p>Counter: {{ count | async }}</p>
   <div>
     <button (click)="decrement()">Decrement</button>
     <button (click)="increment()">Increment</button>
@@ -10,5 +10,5 @@
 
 <h2>Action Log</h2>
 <ol>
-  <li *ngFor="let action of actions()">{{ action }}</li>
+  <li *ngFor="let action of logActions | async">{{ action }}</li>
 </ol>

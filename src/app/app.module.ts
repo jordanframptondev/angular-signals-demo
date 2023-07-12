@@ -12,6 +12,7 @@ import { RxjsAsyncComponent } from './components/rxjs-async/rxjs-async.component
 import { SignalAsyncComponent } from './components/signal-async/signal-async.component';
 import { DocPageComponent } from './doc-page/doc-page.component';
 import { RxjsVsSignalsPageComponent } from './rxjs-vs-signals-page/rxjs-vs-signals-page.component';
+import { RxjsCounterComponent } from './components/rxjs-counter/rxjs-counter.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { RxjsVsSignalsPageComponent } from './rxjs-vs-signals-page/rxjs-vs-signa
     RxjsAsyncComponent,
     SignalAsyncComponent,
     RxjsVsSignalsPageComponent,
+    RxjsCounterComponent,
   ],
   imports: [
     BrowserModule,

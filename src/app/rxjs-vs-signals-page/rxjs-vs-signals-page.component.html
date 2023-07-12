@@ -8,6 +8,146 @@ WHY?
 - Up to this point Angular is already integrated with RXJS and Behavior Subjects offer the same basic functionality as Signals. So why introduce Signals?
 - Signals offer multiple way options to simplify reactive programming with less code and easier learning curve.
 
+Signal Vs Behavior Subject
 
+--
+
+Creating a Reactive Value
+
+signals look like this
+count = signal(0);
+
+behavior subject looks like this
+count = new BehaviorSubject(0);
+
+the syntax here is fairly similar
+
+--
+
+Accessing a Value
+
+Signal <p>{{ count() }}</p>
+BehaviorSubject <p>{{ count | async }}</p>
+
+The templates look similar enough. In Signals we access the value directly by calling a function.
+With a behavior subject you can use the async pipe to pull the value out.
+
+although it is technically possible to access the values through the prototype
+Signal <p>{{ count.value }}</p>
+BehaviorSubject <p>{{ count.getValue() }}</p>
+
+Accessing these values (imperatively) in the Class is also similar
+
+Signal
+logMyValue() {
+  console.log(this.count());
+}
+
+Behavior Subject
+logMyValue() {
+  console.log(this.count.value);
+}
+
+--
+
+Computing Derived Values (a value that relies on another value)
+
+Signal
+count = signal(0);
+doubleCount = computed(()=> this.count() * 2);
+
+Behavior Subject
+count = new BehaviorSubject(0);
+doubleCount = this.count.pipe(map((count) => count * 2));
+
+reasonably similar syntax here, but you could say signals are a little simpler. but the difference could be trivial.
+
+a big difference that happened though, as soon as you pipe onto a BehaviorSubject to use an operator like Map, it ceases being
+a BehaviorSubject and turns into a standard Observable. This means we can no longer access its value directly, we have to subscribe.
+It also means we are developing in a world of Observables and all of the concepts they bring to the table.
+- Subscribing and UnSubscribing
+- the Async pipe
+- unintended consequences of multiple subscriptions, side effects, hot and cold observables, and so on...
+
+When you want to get the value of doubleCount for example, you will need to create a subscription like this...
+someMethod() {
+  this.doubleCount.subscribe((value)=> console.log(value));
+}
+
+because we created a subscription, we should make sure we have some kind of unsubscribe strategy as well to avoid any unwanted behavior or memory leak.
+destroy$ = new Subject<void>();
+ngOnDestroy() {
+  this.destroy$.next();
+}
+
+someMethod() {
+  this.doubleCount.pipe(takeUntil(this.destroy$)).subscribe((value)=> console.log(value));
+}
+
+This is the beginning of the RXJS world. and for beginners this can be a steep curve to get familiar with. To be able to problem solve and write clean code
+using RXJS is not as beginner friendly.
+
+--
+
+What if we want to combine multiple derived values into a single value?
+
+Once again, Signals are pretty straight forward
+valueOne = signals(1);
+valueTwo = signals(10);
+
+derivedValue = computed(()=> this.valueOne() * this.valueTwo());
+
+onChangeValues() {
+  this.valueOne.set(2);
+  this.valueTwo.set(20);
+}
+
+Whenever any of the dependencies in the computed signal are updated then the derived value will also update.
+
+You can do the same thing with RXJS but it starts to get more complex
+
+valueOne = new BehaviorSubject(1);
+valueTwo = new BehaviorSubject(10);
+
+derivedValue = combineLatest([this.valueOne, this.valueTwo]).pipe(map(([one, two]) => one * two));
+
+onChangeValues() {
+  this.valueOne.next(2);
+  this.valueTwo.next(20);
+}
+
+This requires using the combineLatest observable creator, which can be a little awkward.
+combineLatest also wont return a derived value until both inputs return a results (but not with BehaviorSubjects sense they have a value initialized).
+Combine Latest also suffers from the diamond problem. when two values update at the same time, it runs both updates until the final result. in the process there
+is an incorrect transitory value.
+
+Signals solves this with a concept called "glitch free computation".
+
+--
+
+Side Effects
+
+With Signals you can create a side function with the effect() method.
+
+constructor() {
+  effect(()=> {
+    console.log("count updated! ", this.count());
+  })
+}
+
+the effect() method automatically tracks its dependencies. Whenever any of the signal values change it will run the effect method. it important to note
+that the value has to change, if you update the value to the same thing it will not run.
+
+With RXJS you can achieve a similar side effect with Tap operator or by manually subscribing. This is a reasonably common pattern and one that doesnt
+appear dangerous on the surface but can have a couple gotchas.
+
+count = this.myService.getCount().pipe(tap((count)=> console.log("count updated! ", count)));
+
+doubleCount = this.count.pipe(map((count)=> count * 2));
+
+One of the undesired behaviors in RXJS is when you access a value in the template using async pipe {{ count | async }}. Everywhere in the template that gets
+the value will trigger the side effect.
+
+----
 
 -->
