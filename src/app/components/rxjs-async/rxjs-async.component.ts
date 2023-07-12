@@ -23,7 +23,7 @@ export class RxjsAsyncComponent implements OnInit, OnDestroy {
   }
 
   getRandomUser() {
-    this.fakeUserService.rxjsFetchRandomUser$();
+    this.fakeUserService.rxjsFetchRandomUser$().subscribe();
   }
 
   ngOnDestroy() {

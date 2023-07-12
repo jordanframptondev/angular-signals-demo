@@ -15,6 +15,6 @@ export class SignalAsyncComponent {
   }
 
   getRandomUser() {
-    this.fakeUserService.signalFetchRandomUser$();
+    this.fakeUserService.signalFetchRandomUser$().subscribe();
   }
 }
